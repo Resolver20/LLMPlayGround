@@ -1,0 +1,13 @@
+html, body {margin: 0; padding: 0; overflow:hidden;}
+
+#root{
+  background-color: purple;
+  margin:0;
+  padding:0;
+  height: 100vh;
+    width: 100vw;
+
+}
+a{
+  text-decoration:none;
+}
