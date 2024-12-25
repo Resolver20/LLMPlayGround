@@ -9,7 +9,9 @@ const LoginPage = () => {
   const [formFields,setFormFields]=useState({});
   const usernameRef=useRef();
   const passwordRef=useRef();
-  const url = `${import.meta.env.VITE_HOST}:${import.meta.env.VITE_PORT}`;
+  const url = `${import.meta.env.VITE_LOCAL_HOST}:${
+    import.meta.env.VITE_LOCAL_HOST_PORT
+  }`;
   const location =useLocation();
   const [message,setMessage]=useState("");
   const navigate=useNavigate();
