@@ -53,7 +53,9 @@ export const TopPanel=()=>{
         setIsTitleEmpty(false);
         try {
           const response = await fetch(
-            `${import.meta.env.VITE_HOST}:${import.meta.env.VITE_PORT}` + "/save",
+            `${import.meta.env.VITE_LOCAL_HOST}:${
+              import.meta.env.VITE_LOCAL_HOST_PORT
+            }` + "/save",
             {
               method: "POST",
               headers: { "Content-Type": "application/json" },
