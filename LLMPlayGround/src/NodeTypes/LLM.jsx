@@ -154,15 +154,12 @@ export const LLM = ({ id, data }) => {
       >
         <button
           ref={buttonRef}
-          onClick={(event) =>
-            handleButtonClick(
-              event
-            )
-          }
+          onClick={(event) => handleButtonClick(event)}
           disabled={boolean}
           style={{
             ...styles.button,
-            backgroundColor:  boolean  ? "transparent" : "blue",
+            backgroundColor: boolean ? "transparent" : "blue",
+            color: "white",
           }}
         >
           <FiCodepen style={styles.icon} />
@@ -250,8 +247,6 @@ const styles = {
     backgroundColor: "transparent",
   },
   button: {
-    backgroundColor: "#007BFF",
-    color: "#fff",
     border: "none",
     borderRadius: "5px",
     padding: "8px 12px",

@@ -1,12 +1,16 @@
 import { useReactFlow ,Panel} from "@xyflow/react";
 import { MdOutlineSaveAlt } from "react-icons/md";
 import {useRef,useContext,useState,useEffect,useCallback} from "react";
+import {  useNavigate } from "react-router";
+
 import {MyTitleContext,MySavedContext,MyModeContext} from "./Flow.jsx";
 import { AiOutlineClear } from "react-icons/ai";
 import { queryUserFlows } from "./SidePanel.jsx";
 import CircularProgress from "@mui/joy/CircularProgress";
 import { MdLightMode } from "react-icons/md";
 import { TiDocumentAdd } from "react-icons/ti";
+import { IoIosLogOut } from "react-icons/io";
+
 
 
 export const TopPanel=()=>{
@@ -17,6 +21,7 @@ export const TopPanel=()=>{
     const [mode, setMode] = useContext(MyModeContext);
     const [isTitleEmpty,setIsTitleEmpty]=useState(false);
     const styles=getStyles(mode,isTitleEmpty);
+    const navigate = useNavigate();
 
 
     const handleSaveShortcut = (event) => {
@@ -81,6 +86,11 @@ export const TopPanel=()=>{
       }
     };
 
+    const LogOut=()=>{
+        localStorage.removeItem("access_token");
+        navigate("/");
+    }
+    
     const clearFlow=useCallback(async ()=>{
       rf.setNodes([]);
       rf.setEdges([]);
@@ -117,6 +127,14 @@ export const TopPanel=()=>{
             </button>
             <button style={styles.action_buttons} onClick={ChangeColor}>
               <MdLightMode
+                style={styles.action_icon}
+                onMouseEnter={(event) => {
+                  event.currentTarget.style.cursor = "pointer";
+                }}
+              />
+            </button>
+            <button style={styles.action_buttons} onClick={LogOut}>
+              <IoIosLogOut
                 style={styles.action_icon}
                 onMouseEnter={(event) => {
                   event.currentTarget.style.cursor = "pointer";
@@ -170,7 +188,7 @@ const getStyles = (mode,isTitleEmpty) => ({
     width: "40px",
     height: "40px",
     border: "none",
-    right: "90px",
+    right: "130px",
     top: "1px",
   },
   topRight_buttons: {
