@@ -50,13 +50,11 @@ export const MyModeContext = createContext();
 export const FlowWrapper=()=>{
     const titleInputRef=useRef();
     const [data, setData] = useState([]);
-    // const value=localStorage.getItem("isLight");
-    // if(value===null){
-      // localStorage.setItem("isLight",false);
-      // value=false;
-    // }
-    const [mode, setMode] = useState(false);
-    // console.log(" value mode ", value, mode);
+    const value=localStorage.getItem("isLight");
+    if(value===null){
+      localStorage.setItem("isLight",false);
+    }
+    const [mode, setMode] = useState((localStorage.getItem("isLight")=="true")?true:false);
 
     return (
       

@@ -32,7 +32,7 @@ export const queryUserFlows = async (setData) => {
 
 
 const DeleteFlow = async (elem,setData,rf,titleInputRef) => {
-  const url = `${import.meta.env.VITE_HOST}:${import.meta.env.VITE_PORT}`;
+  const url = `${import.meta.env.VITE_LOCAL_HOST}:${import.meta.env.VITE_LOCAL_HOST_PORT}`;
   try {
     const token = window.localStorage.getItem("access_token");
     const response = await fetch(url + "/deleteData", {
