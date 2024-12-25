@@ -43,6 +43,10 @@ async function delay(ms) {
 }
 
 //Servers
+app.get("/", (req, res) => {
+  res.json({ message: "Here is your server" });
+});
+
 
 app.post("/queryGrok",async(req,res)=>{
   const {token,query_data}=req.body;
