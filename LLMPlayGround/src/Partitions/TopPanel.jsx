@@ -76,7 +76,7 @@ export const TopPanel=()=>{
           const res_data = await response.json();
           console.log("response_data",res_data);
           localStorage.setItem("CurrentFlow",res_data._id);
-          queryUserFlows(setData);
+          queryUserFlows(setData,setIsLoading);
         } catch (err) {
           console.log(err);
         }
