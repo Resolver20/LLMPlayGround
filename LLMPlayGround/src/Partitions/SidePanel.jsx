@@ -44,6 +44,7 @@ const DeleteFlow = async (elem,setData,rf,titleInputRef,setIsLoading) => {
     }
     const data = await response.json();
     // console.log(data.message);
+    localStorage.setItem("CurrentFlow", -1);
     rf.setNodes([]);
     rf.setEdges( []);
     rf.setViewport([]);
