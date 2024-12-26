@@ -1,17 +1,15 @@
 import {useState,useRef,useCallback,useEffect} from "react";
 import { NavLink,useLocation,useNavigate} from "react-router";
 import "../css/banner.css";
-
+import {url} from "../App.jsx";
 
 
 
 const LoginPage = () => {
+  console.log("url value : ", url);
   const [formFields,setFormFields]=useState({});
   const usernameRef=useRef();
   const passwordRef=useRef();
-  const url = `${import.meta.env.VITE_LOCAL_HOST}:${
-    import.meta.env.VITE_LOCAL_HOST_PORT
-  }`;
   const location =useLocation();
   const [message,setMessage]=useState("");
   const navigate=useNavigate();
@@ -38,7 +36,7 @@ const LoginPage = () => {
     const pwd=passwordRef.current.value;
     try{
 
-      const response = await fetch((url + "/login"), { method: "POST", headers :{"Content-Type":"application/json"},  body: JSON.stringify({ username :userName,password:pwd} )})
+      const response = await fetch((url + `/login`), { method: "POST", headers :{"Content-Type":"application/json"},  body: JSON.stringify({ username :userName,password:pwd} )})
       if (!response.ok) { 
           throw new Error(`HTTP error! Status: ${response.status}`);
       }

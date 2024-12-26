@@ -10,7 +10,7 @@ import CircularProgress from "@mui/joy/CircularProgress";
 import { MdLightMode } from "react-icons/md";
 import { TiDocumentAdd } from "react-icons/ti";
 import { IoIosLogOut } from "react-icons/io";
-
+import { url } from "../App.jsx";
 
 
 export const TopPanel=()=>{
@@ -58,9 +58,7 @@ export const TopPanel=()=>{
         setIsTitleEmpty(false);
         try {
           const response = await fetch(
-            `${import.meta.env.VITE_LOCAL_HOST}:${
-              import.meta.env.VITE_LOCAL_HOST_PORT
-            }` + "/save",
+            url + "/save",
             {
               method: "POST",
               headers: { "Content-Type": "application/json" },

@@ -1,6 +1,10 @@
 
 import {FlowWrapper} from "./Partitions/Flow.jsx";
+
+export const url = import.meta.env.VITE_VERCEL_HOST;
+
 export default function App() {
+  
   return (
     <div style={styles.container}>
     <FlowWrapper/>

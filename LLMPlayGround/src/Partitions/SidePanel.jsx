@@ -5,12 +5,10 @@ import {useCallback,useEffect, useState,useContext} from "react";
 import { useReactFlow } from "@xyflow/react";
 import { RxCross1 } from "react-icons/rx";
 import { MyTitleContext,MySavedContext,MyModeContext } from "./Flow.jsx";
+import { url } from "../App.jsx";
 
   
 export const queryUserFlows = async (setData) => {
-    const url = `${import.meta.env.VITE_LOCAL_HOST}:${
-      import.meta.env.VITE_LOCAL_HOST_PORT
-    }`;
     try {
       const token = window.localStorage.getItem("access_token");
       const response = await fetch(url + "/getSaved", {
@@ -32,7 +30,6 @@ export const queryUserFlows = async (setData) => {
 
 
 const DeleteFlow = async (elem,setData,rf,titleInputRef) => {
-  const url = `${import.meta.env.VITE_LOCAL_HOST}:${import.meta.env.VITE_LOCAL_HOST_PORT}`;
   try {
     const token = window.localStorage.getItem("access_token");
     const response = await fetch(url + "/deleteData", {

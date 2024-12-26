@@ -1,5 +1,6 @@
 import { useState, useRef } from "react";
 import { NavLink ,useNavigate} from "react-router";
+import { url } from "../App.jsx";
 
 
 
@@ -17,9 +18,6 @@ const SignUp = () => {
        const pwd1 = pwdRef.current.value;
        const pwd2 = rePwdRef.current.value;
        if(pwd1===pwd2){
-         const url = `${import.meta.env.VITE_LOCAL_HOST}:${
-           import.meta.env.VITE_LOCAL_HOST_PORT
-         }`;
           try {
             const response = await fetch(url + "/signup", {
               method: "POST",
