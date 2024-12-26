@@ -4,11 +4,12 @@ import { BsCollection } from "react-icons/bs";
 import {useCallback,useEffect, useState,useContext} from "react";
 import { useReactFlow } from "@xyflow/react";
 import { RxCross1 } from "react-icons/rx";
-import { MyTitleContext,MySavedContext,MyModeContext } from "./Flow.jsx";
+import { MyTitleContext,MySavedContext,MyModeContext,MyLoadingContext } from "./Flow.jsx";
 import { url } from "../App.jsx";
 
   
-export const queryUserFlows = async (setData) => {
+export const queryUserFlows = async (setData,setIsLoading) => {
+    setIsLoading(true);
     try {
       const token = window.localStorage.getItem("access_token");
       const response = await fetch(url + "/getSaved", {
@@ -23,6 +24,7 @@ export const queryUserFlows = async (setData) => {
       console.log("data ",data.message);
 
       setData(data.message);
+      setIsLoading(false);
     } catch (error) {
       console.log(error);
     }
@@ -46,8 +48,7 @@ const DeleteFlow = async (elem,setData,rf,titleInputRef) => {
     rf.setEdges( []);
     rf.setViewport([]);
     titleInputRef.current.value = "";
-
-    queryUserFlows(setData);
+    queryUserFlows(setData,setIsLoading);
   } catch (error) {
     console.log(error);
   }
@@ -55,6 +56,7 @@ const DeleteFlow = async (elem,setData,rf,titleInputRef) => {
 
 
 export const SidePanel = () => {
+  const [isLoading, setIsLoading] = useContext(MyLoadingContext);
   const rf=useReactFlow();
   const [data,setData]=useContext(MySavedContext);
   const  titleInputRef  = useContext(MyTitleContext);
@@ -63,12 +65,12 @@ export const SidePanel = () => {
 
 
   useEffect(()=>{
-    queryUserFlows(setData);
+    queryUserFlows(setData,setIsLoading);
     localStorage.setItem("CurrentFlow",-1);
     console.log("Tools.useEffect([]) => ", " called queryUserFlows ");
   },[]);
 
-  const UpdateFlow=(elem)=>{
+  const UpdateFlow=(elem,setIsLoading)=>{
     console.log("id of the flow ", elem._id);
     localStorage.setItem("CurrentFlow",elem._id);
     const currentFlow=JSON.parse(elem.data);
@@ -107,7 +109,7 @@ export const SidePanel = () => {
                     >
                       <button
                         style={styles.saved_item_button}
-                        onClick={() => UpdateFlow(elem)}
+                        onClick={() => UpdateFlow(elem,setIsLoading)}
                       >
                         <h5>{elem.title}</h5>
                       </button>

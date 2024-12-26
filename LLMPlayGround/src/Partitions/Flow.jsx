@@ -46,8 +46,10 @@ const initialEdges = [
 export const MyTitleContext=createContext();
 export const MySavedContext=createContext();
 export const MyModeContext = createContext();
+export const MyLoadingContext = createContext();
 
 export const FlowWrapper=()=>{
+    const [isLoading, setIsLoading] = useState(false);
     const titleInputRef=useRef();
     const [data, setData] = useState([]);
     const value=localStorage.getItem("isLight");
@@ -57,16 +59,17 @@ export const FlowWrapper=()=>{
     const [mode, setMode] = useState((localStorage.getItem("isLight")=="true")?true:false);
 
     return (
-      
       <ReactFlowProvider>
-        <MyModeContext.Provider value={[mode,setMode]}>
-        <MySavedContext.Provider value={[data,setData]}>
-          <MyTitleContext.Provider  value={titleInputRef}>
-              <SidePanel/>
-              <Flow/>
-          </MyTitleContext.Provider>
-        </MySavedContext.Provider>
-        </MyModeContext.Provider>
+        <MyLoadingContext.Provider value={[isLoading, setIsLoading]}>
+          <MyModeContext.Provider value={[mode, setMode]}>
+            <MySavedContext.Provider value={[data, setData]}>
+              <MyTitleContext.Provider value={titleInputRef}>
+                <SidePanel />
+                <Flow />
+              </MyTitleContext.Provider>
+            </MySavedContext.Provider>
+          </MyModeContext.Provider>
+        </MyLoadingContext.Provider>
       </ReactFlowProvider>
     );
 };

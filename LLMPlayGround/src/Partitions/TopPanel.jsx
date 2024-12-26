@@ -3,7 +3,7 @@ import { MdOutlineSaveAlt } from "react-icons/md";
 import {useRef,useContext,useState,useEffect,useCallback} from "react";
 import {  useNavigate } from "react-router";
 
-import {MyTitleContext,MySavedContext,MyModeContext} from "./Flow.jsx";
+import {MyTitleContext,MySavedContext,MyModeContext,MyLoadingContext} from "./Flow.jsx";
 import { AiOutlineClear } from "react-icons/ai";
 import { queryUserFlows } from "./SidePanel.jsx";
 import CircularProgress from "@mui/joy/CircularProgress";
@@ -17,7 +17,7 @@ export const TopPanel=()=>{
     const rf=useReactFlow();
     const [data,setData]=useContext(MySavedContext);
     const titleInputRef=useContext(MyTitleContext);
-    const [isLoading, setIsLoading] = useState(false);
+    const [isLoading, setIsLoading] = useContext(MyLoadingContext);
     const [mode, setMode] = useContext(MyModeContext);
     const [isTitleEmpty,setIsTitleEmpty]=useState(false);
     const styles=getStyles(mode,isTitleEmpty);
