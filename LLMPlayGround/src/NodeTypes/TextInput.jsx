@@ -12,7 +12,7 @@ export const TextInput = ({ id,data }) => {
   // console.log(id,current_node.data.node_data);
     const node = rf.getNode(id);
 
-  console.log("TextInput => ",node);
+  // console.log("TextInput => ",node);
 
   // useEffect(()=>{
     // setInputData(current_node.data.node_data);
@@ -27,13 +27,13 @@ export const TextInput = ({ id,data }) => {
 
   useEffect(() => 
     {
-      console.log("TextInput => isMounted1 ", isMounted1);
+      // console.log("TextInput => isMounted1 ", isMounted1);
       if(isMounted1.current){
 
         const current_node=rf.getNode(id);
         if(current_node.data.node_data!==inputData){
           
-          console.log("TextInput.useEffect([inputData]).updateNode  (message : Updating current Nodes data ) =>" ,inputData ,":end")  
+          // console.log("TextInput.useEffect([inputData]).updateNode  (message : Updating current Nodes data ) =>" ,inputData ,":end")  
           rf.updateNode(id, (node) => ({ ...node, data: { ...node.data, node_data: inputData, }, }));
           
           // console.log("TextInput.useEffect([inputData]).setNodes  (message : propagating changes to other connected nodes ) => ")
@@ -65,11 +65,11 @@ export const TextInput = ({ id,data }) => {
 
   const handleDataChange = useCallback((event) => {
     const input = event.target.value;
-    console.log("TextInput.handleDataChange  (message : There is an input Data change ) =>", input);
+    // console.log("TextInput.handleDataChange  (message : There is an input Data change ) =>", input);
     setInputData(input);
 
     if (inputRef.current) {
-      console.log("Height Change");
+      // console.log("Height Change");
       inputRef.current.style.height = "70px"; // Reset height for scrollHeight recalculation
       const scrollHeight = inputRef.current.scrollHeight;
       inputRef.current.style.height = `${scrollHeight}px`; // Adjust height dynamically

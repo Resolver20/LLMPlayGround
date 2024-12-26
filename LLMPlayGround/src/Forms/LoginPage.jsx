@@ -6,7 +6,7 @@ import {url} from "../App.jsx";
 
 
 const LoginPage = () => {
-  console.log("url value : ", url);
+  // console.log("url value : ", url);
   const [formFields,setFormFields]=useState({});
   const usernameRef=useRef();
   const passwordRef=useRef();
@@ -27,9 +27,6 @@ const LoginPage = () => {
 
 
   const { username }=location.state||{};
-  if(username){
-    console.log("Username "+ username );
-  }
 
   const Authenticate=async ()=>{
     const userName=usernameRef.current.value;
@@ -42,7 +39,7 @@ const LoginPage = () => {
       }
       const data=await response.json();
       window.localStorage.setItem("access_token", data.token);
-      console.log(data); 
+      // console.log(data); 
       navigate("/App");
     }
     catch(error){

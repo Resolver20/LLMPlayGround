@@ -28,8 +28,8 @@ export const LLM = ({ id, data }) => {
   const isMounted1=useRef(false);
   const isMounted2=useRef(false);
   const isMounted3=useRef(false);
-  console.log("LLM (message : data )=>  ", data);
-  console.log("LLM Node ",current_node);
+  // console.log("LLM (message : data )=>  ", data);
+  // console.log("LLM Node ",current_node);
 
   const connected_ids = getOutgoers(node, rf.getNodes(), rf.getEdges()).map(
     (node) => node.id
@@ -38,10 +38,10 @@ export const LLM = ({ id, data }) => {
 
 
   useEffect(() => {
-    console.log(" LLM => isMounted1.current ",isMounted1);
+    // console.log(" LLM => isMounted1.current ",isMounted1);
     if(isMounted1.current){
 
-      console.log("LLM.useEffect([data.node_data]) => ",data);
+      // console.log("LLM.useEffect([data.node_data]) => ",data);
       rf.setNodes((nodes) => {
         if (!nodes) return [];
         return nodes.map((node) => {
@@ -64,7 +64,7 @@ export const LLM = ({ id, data }) => {
   }, [data.node_data]);
 
   const onBooleanChange=(flag)=>{
-    console.log("LLM.onBooleanChange => ",flag);
+    // console.log("LLM.onBooleanChange => ",flag);
 
       rf.setNodes((nodes) => {
         if (!nodes) return [];
@@ -81,10 +81,10 @@ export const LLM = ({ id, data }) => {
   };
 
   useEffect(()=>{
-    console.log(" LLM => isMounted1.current ", isMounted2);
+    // console.log(" LLM => isMounted1.current ", isMounted2);
     if(isMounted2.current){
 
-      console.log("LLM.useEffect([data.booleanState]) =>" ,data.boolean_state);
+      // console.log("LLM.useEffect([data.booleanState]) =>" ,data.boolean_state);
       setBoolean(data.boolean_state);
     }
     else{
@@ -124,17 +124,17 @@ export const LLM = ({ id, data }) => {
 
 
   useEffect(() => {
-    console.log(" LLM => isMounted1.current ", isMounted3);
+    // console.log(" LLM => isMounted1.current ", isMounted3);
     if(isMounted3.current){
 
       const new_data = Object.entries(data.input_data)
       .filter(([key]) => key !== id)
       .map(([_, value]) => value);
-      console.log("LLM.useEffect([data.input_data]) => ", data);
+      // console.log("LLM.useEffect([data.input_data]) => ", data);
       setInputValue(new_data);
       
       if (data.update_from === "LLM") {
-        console.log( "LLM.useEffect([data. input_data]) => ( message : clicking the run button )", data );
+        // console.log( "LLM.useEffect([data. input_data]) => ( message : clicking the run button )", data );
         buttonRef.current.click() ;
       }
     }

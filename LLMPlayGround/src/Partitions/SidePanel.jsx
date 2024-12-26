@@ -21,7 +21,7 @@ export const queryUserFlows = async (setData,setIsLoading) => {
         throw new Error(`HTTP error! Status: ${response.status}`);
       }
       const data = await response.json();
-      console.log("data ",data.message);
+      // console.log("data ",data.message);
 
       setData(data.message);
       setIsLoading(false);
@@ -68,11 +68,11 @@ export const SidePanel = () => {
   useEffect(()=>{
     queryUserFlows(setData,setIsLoading);
     localStorage.setItem("CurrentFlow",-1);
-    console.log("Tools.useEffect([]) => ", " called queryUserFlows ");
+    // console.log("Tools.useEffect([]) => ", " called queryUserFlows ");
   },[]);
 
   const UpdateFlow=(elem,setIsLoading)=>{
-    console.log("id of the flow ", elem._id);
+    // console.log("id of the flow ", elem._id);
     localStorage.setItem("CurrentFlow",elem._id);
     const currentFlow=JSON.parse(elem.data);
     if(titleInputRef){

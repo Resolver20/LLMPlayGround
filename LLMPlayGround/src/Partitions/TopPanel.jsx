@@ -54,7 +54,7 @@ export const TopPanel=()=>{
           setIsLoading(false);
           return;
         }
-        console.log("Value of mode",mode);
+        // console.log("Value of mode",mode);
         setIsTitleEmpty(false);
         try {
           const response = await fetch(
@@ -74,7 +74,7 @@ export const TopPanel=()=>{
             throw new Error(`HTTP error! Status: ${response.status}`);
           }
           const res_data = await response.json();
-          console.log("response_data",res_data);
+          // console.log("response_data",res_data);
           localStorage.setItem("CurrentFlow",res_data._id);
           queryUserFlows(setData,setIsLoading);
         } catch (err) {

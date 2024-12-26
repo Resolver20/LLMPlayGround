@@ -25,7 +25,6 @@ export async function fetch_LLama(event, data, streamEmitter, id, queryType) {
     }
     const reader = response.body.getReader();
     const decoder = new TextDecoder();
-    console.log("Streaming response:");
     while (true) {
       const { value, done } = await reader.read();
       if (done) {
@@ -35,7 +34,6 @@ export async function fetch_LLama(event, data, streamEmitter, id, queryType) {
       streamEmitter.emit("data", chunk);
     }
     streamEmitter.emit("end");
-    console.log("Streaming response:");
   } catch (err) {
     console.log(err);
   }
