@@ -31,7 +31,7 @@ export const queryUserFlows = async (setData,setIsLoading) => {
   };
 
 
-const DeleteFlow = async (elem,setData,rf,titleInputRef) => {
+const DeleteFlow = async (elem,setData,rf,titleInputRef,setIsLoading) => {
   try {
     const token = window.localStorage.getItem("access_token");
     const response = await fetch(url + "/deleteData", {
@@ -119,7 +119,13 @@ export const SidePanel = () => {
                           event.currentTarget.style.cursor = "pointer";
                         }}
                         onClick={() => {
-                          DeleteFlow(elem, setData,rf,titleInputRef);
+                          DeleteFlow(
+                            elem,
+                            setData,
+                            rf,
+                            titleInputRef,
+                            setIsLoading
+                          );
                         }}
                       >
                         <RxCross1
