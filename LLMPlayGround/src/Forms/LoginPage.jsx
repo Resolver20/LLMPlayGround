@@ -18,8 +18,8 @@ const LoginPage = () => {
   const { username }=location.state||{};
   
     useEffect(() => {
-      if(username){ toast(`Welcome ${username} 👋`); }
-      else{toast("Welcome Stranger 👋")}
+      if(username){ toast(`${import.meta.env.VITE_ASSISTANT}Welcome ${username} !!`); }
+      else{toast(`${import.meta.env.VITE_ASSISTANT}Welcome Stranger !!`);}
     }, []);
 
   const Authenticate=async ()=>{

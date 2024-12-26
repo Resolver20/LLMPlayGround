@@ -2,7 +2,7 @@ import {useState,useContext} from "react";
 import { FiCodepen } from "react-icons/fi";
 import { BsInputCursor } from "react-icons/bs";
 import { MyModeContext } from "../Partitions/Flow.jsx";
-
+import Tooltip from "@mui/joy/Tooltip";
 
 export const DraggableNode = ({ type,label }) => {
    const [mode, setMode] = useContext(MyModeContext);
@@ -18,17 +18,21 @@ export const DraggableNode = ({ type,label }) => {
 
   return (
     <>
-
-
-      <div
-        style={{...styles.container}}
-        onDragStart={(event) => { onDragStart(event, type); }}
-        onDragEnd={(event) => (event.target.style.cursor = "grab")}
-        onMouseEnter={(event)=>{event.currentTarget.style.cursor="grab";}}
-        draggable
+      <Tooltip title={label} variant="soft" placement="right-end">
+        <div
+          style={{ ...styles.container }}
+          onDragStart={(event) => {
+            onDragStart(event, type);
+          }}
+          onDragEnd={(event) => (event.target.style.cursor = "grab")}
+          onMouseEnter={(event) => {
+            event.currentTarget.style.cursor = "grab";
+          }}
+          draggable
         >
-        {mapper[label]}
-      </div>
+          {mapper[label]}
+        </div>
+      </Tooltip>
     </>
   );
 };

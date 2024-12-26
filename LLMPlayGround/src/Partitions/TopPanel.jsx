@@ -2,7 +2,6 @@ import { useReactFlow ,Panel} from "@xyflow/react";
 import { MdOutlineSaveAlt } from "react-icons/md";
 import {useRef,useContext,useState,useEffect,useCallback} from "react";
 import {  useNavigate } from "react-router";
-
 import {MyTitleContext,MySavedContext,MyModeContext,MyLoadingContext} from "./Flow.jsx";
 import { AiOutlineClear } from "react-icons/ai";
 import { queryUserFlows } from "./SidePanel.jsx";
@@ -11,7 +10,8 @@ import { MdLightMode } from "react-icons/md";
 import { TiDocumentAdd } from "react-icons/ti";
 import { IoIosLogOut } from "react-icons/io";
 import { url } from "../App.jsx";
-
+import { toast } from "sonner";
+import Tooltip from "@mui/joy/Tooltip";
 
 export const TopPanel=()=>{
     const rf=useReactFlow();
@@ -48,7 +48,7 @@ export const TopPanel=()=>{
         const data = JSON.stringify(flow);
         const title = titleInputRef.current.value;
         if (title.length == 0) {
-          titleInputRef.current.style.borderBottom = "1px solid red";
+          toast.error(`${import.meta.env.VITE_ASSISTANT}Please Enter The Title to Save`);
           localStorage.setItem("CurrentFlow", data_id);
           setIsTitleEmpty(true);
           setIsLoading(false);
@@ -75,6 +75,7 @@ export const TopPanel=()=>{
           }
           const res_data = await response.json();
           // console.log("response_data",res_data);
+          toast.success(`${import.meta.env.VITE_ASSISTANT} Successfully Saved !!`);
           localStorage.setItem("CurrentFlow",res_data._id);
           queryUserFlows(setData,setIsLoading);
         } catch (err) {
@@ -89,11 +90,13 @@ export const TopPanel=()=>{
         navigate("/");
     }
     
-    const clearFlow=useCallback(async ()=>{
+    const createNewFlow=useCallback(async ()=>{
+      toast( `${import.meta.env.VITE_ASSISTANT}Created New Flow` );
       rf.setNodes([]);
       rf.setEdges([]);
       rf.setViewport([]);
       titleInputRef.current.value = "";
+      setIsTitleEmpty(false);
       localStorage.setItem("CurrentFlow",-1);
     },[]);
     
@@ -115,30 +118,40 @@ export const TopPanel=()=>{
                 />
               )}
             </button>
-            <button style={styles.action_buttons} onClick={clearFlow}>
-              <TiDocumentAdd
-                style={styles.action_icon}
-                onMouseEnter={(event) => {
-                  event.currentTarget.style.cursor = "pointer";
-                }}
-              />
-            </button>
+
+            <Tooltip title="New Flow" variant="soft">
+              <button
+                style={styles.action_buttons}
+                onClick={createNewFlow}
+              >
+                <TiDocumentAdd
+                  style={styles.action_icon}
+                  onMouseEnter={(event) => {
+                    event.currentTarget.style.cursor = "pointer";
+                  }}
+                />
+              </button>
+            </Tooltip>
+            <Tooltip title="Change Mode" variant="soft">
             <button style={styles.action_buttons} onClick={ChangeColor}>
               <MdLightMode
                 style={styles.action_icon}
                 onMouseEnter={(event) => {
                   event.currentTarget.style.cursor = "pointer";
                 }}
-              />
+                />
             </button>
+            </Tooltip>
+            <Tooltip title="LogOut" variant="soft">
             <button style={styles.action_buttons} onClick={LogOut}>
               <IoIosLogOut
                 style={styles.action_icon}
                 onMouseEnter={(event) => {
                   event.currentTarget.style.cursor = "pointer";
                 }}
-              />
+                />
             </button>
+              </Tooltip>
           </div>
         </Panel>
 

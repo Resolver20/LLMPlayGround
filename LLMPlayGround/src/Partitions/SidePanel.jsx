@@ -6,8 +6,8 @@ import { useReactFlow } from "@xyflow/react";
 import { RxCross1 } from "react-icons/rx";
 import { MyTitleContext,MySavedContext,MyModeContext,MyLoadingContext } from "./Flow.jsx";
 import { url } from "../App.jsx";
+import Tooltip from "@mui/joy/Tooltip";
 
-  
 export const queryUserFlows = async (setData,setIsLoading) => {
     setIsLoading(true);
     try {
@@ -93,53 +93,58 @@ export const SidePanel = () => {
           <DraggableNode type="TextInput" label="TextInput" />
         </div>
         <div style={styles.saved_div}>
-          <div style={styles.heading}> <h3> Saved </h3> </div>
+          <div style={styles.heading}>
+            {" "}
+            <h3> Saved </h3>{" "}
+          </div>
           <div style={styles.saved_item_container}>
             {data
               ? data.map((elem, index) => (
-                    <div
-                      key={index} 
-                      style={styles.saved_item}
+                  <div
+                    key={index}
+                    style={styles.saved_item}
+                    onMouseEnter={(event) => {
+                      event.currentTarget.style.backgroundColor = "darkgray";
+                      event.currentTarget.style.cursor = "pointer";
+                    }}
+                    onMouseLeave={(event) => {
+                      event.currentTarget.style.backgroundColor = "transparent";
+                    }}
+                  >
+                    <button
+                      style={styles.saved_item_button}
+                      onClick={() => UpdateFlow(elem, setIsLoading)}
+                    >
+                      <h5>{elem.title}</h5>
+                    </button>
+                    <button
+                      style={styles.icon_button}
                       onMouseEnter={(event) => {
-                        event.currentTarget.style.backgroundColor = "darkgray";
                         event.currentTarget.style.cursor = "pointer";
                       }}
-                      onMouseLeave={(event) => {
-                        event.currentTarget.style.backgroundColor ="transparent" ;
+                      onClick={() => {
+                        DeleteFlow(
+                          elem,
+                          setData,
+                          rf,
+                          titleInputRef,
+                          setIsLoading
+                        );
                       }}
                     >
-                      <button
-                        style={styles.saved_item_button}
-                        onClick={() => UpdateFlow(elem,setIsLoading)}
-                      >
-                        <h5>{elem.title}</h5>
-                      </button>
-                      <button
-                        style={styles.icon_button}
+                      <RxCross1
+                        style={styles.cross_icon}
                         onMouseEnter={(event) => {
-                          event.currentTarget.style.cursor = "pointer";
+                          event.currentTarget.style.color = "red";
                         }}
-                        onClick={() => {
-                          DeleteFlow(
-                            elem,
-                            setData,
-                            rf,
-                            titleInputRef,
-                            setIsLoading
-                          );
+                        onMouseLeave={(event) => {
+                          event.currentTarget.style.color = mode
+                            ? "white"
+                            : "black";
                         }}
-                      >
-                        <RxCross1
-                          style={styles.cross_icon}
-                          onMouseEnter={(event) => {
-                            event.currentTarget.style.color = "red";
-                          }}
-                          onMouseLeave={(event) => {
-                            event.currentTarget.style.color = mode ? "white" : "black";
-                          }}
-                        />
-                      </button>
-                    </div>
+                      />
+                    </button>
+                  </div>
                 ))
               : "none"}
           </div>
