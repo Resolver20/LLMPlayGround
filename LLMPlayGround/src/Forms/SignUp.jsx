@@ -9,9 +9,17 @@ const SignUp = () => {
   const usernameRef = useRef();
   const pwdRef = useRef();
   const rePwdRef = useRef();
+  const registerRef = useRef();
   const [boolean,setBoolean] =useState(true);
   const [feedback,setFeedback]=useState("");
   const navigate=useNavigate();
+
+   const checkForEnter = (event) => {
+     if (event.key === "Enter") {
+       event.preventDefault();
+       registerRef.current.click();
+     }
+   };
 
   const Register= async ()=>{
        const userName = usernameRef.current.value;
@@ -59,10 +67,12 @@ const SignUp = () => {
         <div>
           <div style={styles.input_container}> <h3> Username </h3> <input ref={usernameRef} style={styles.input} type="text" /></div>
           <div style={styles.input_container}> <h3> Password </h3> <input  type="password" ref={pwdRef} style={styles.input}  /> </div>
-          <div style={styles.input_container}> <h3>Re-enter your password </h3> <input type="password" ref={rePwdRef}  style={styles.input} /> </div>
+          <div style={styles.input_container}> <h3>Re-enter your password </h3> <input type="password" ref={rePwdRef} onKeyDown={checkForEnter}  style={styles.input} /> </div>
           <div style={styles.input_container}> 
             <div> <h5 style={{color:"red"}} hidden={boolean} > {feedback} </h5></div>
-            <div> </div> <button style={styles.submitButton} onClick={Register}> <h4> Register </h4> </button> 
+            <div> </div> 
+            <div> <NavLink to="/"> <h5 style={{color:"gray"}}>  { " Go Back " }</h5> </NavLink> </div>
+            <button style={styles.submitButton} ref={registerRef} onClick={Register} onMouseEnter={(event)=>{event.currentTarget.style.cursor = "pointer";}} > <h4> Register </h4> </button> 
             </div> 
         </div>
         <div>

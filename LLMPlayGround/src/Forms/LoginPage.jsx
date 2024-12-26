@@ -1,8 +1,7 @@
 import {useState,useRef,useCallback,useEffect} from "react";
 import { NavLink,useLocation,useNavigate} from "react-router";
-import "../css/banner.css";
 import {url} from "../App.jsx";
-
+import { Toaster, toast } from "sonner";
 
 
 const LoginPage = () => {
@@ -13,20 +12,15 @@ const LoginPage = () => {
   const location =useLocation();
   const [message,setMessage]=useState("");
   const navigate=useNavigate();
+  const buttonRef=useRef();
 
-  const [isVisible, setIsVisible] = useState(true);
-
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setIsVisible(false);
-    }, 3000);
-
-    return () => clearTimeout(timer);
-  }, []);
-
-
-
+  // const [isVisible, setIsVisible] = useState(true);
   const { username }=location.state||{};
+  
+    useEffect(() => {
+      if(username){ toast(`Welcome ${username} 👋`); }
+      else{toast("Welcome Stranger 👋")}
+    }, []);
 
   const Authenticate=async ()=>{
     const userName=usernameRef.current.value;
@@ -43,23 +37,68 @@ const LoginPage = () => {
       navigate("/App");
     }
     catch(error){
+      toast.error(`${error}`);
       console.error('Error:', error);
     };
+   }
+  
+   const checkForEnter = (event) => {
+    if (event.key === "Enter") {
+      event.preventDefault();
+      buttonRef.current.click(); 
+    }
   }
+
   return (
-     <div style={styles.main_div}>
-      <div className={`banner ${!isVisible ? "fade-out" : ""}`}> <h1> Welcome {username} </h1> </div>
-        <div style={styles.loginForm}>
+    <div style={styles.main_div}>
+      {/* <div className={`banner ${!isVisible ? "fade-out" : ""}`}> <h1> Welcome {username} </h1> </div> */}
+      <div style={styles.loginForm}>
+        <Toaster richColors position="top-left" />
+        <div>
+          <div style={styles.input_container}>
+            {" "}
+            <h3> Username </h3>{" "}
+            <input ref={usernameRef} style={styles.input} type="text" />
+          </div>
+          <div style={styles.input_container}>
+            {" "}
+            <h3> Password </h3>{" "}
+            <input
+              ref={passwordRef}
+              style={styles.input}
+              onKeyDown={checkForEnter}
+              type="password"
+            />{" "}
+          </div>
+          <div style={styles.input_container}>
             <div>
-                  <div style={styles.input_container}> <h3> Username </h3> <input ref={usernameRef} style={styles.input} type="text" /></div>
-                  <div style={styles.input_container}> <h3> Password </h3> <input ref={passwordRef} style={styles.input} type="password" /> </div>
-                    <div style={styles.input_container}>
-                        <div> <NavLink to="/SignUp"> <h5 style={{color:"gray"}}> SignUp ? </h5> </NavLink> </div>
-                         <div> <button style={styles.submitButton} onClick={Authenticate}> <h4> Submit </h4> </button> </div> 
-                  </div> 
+              {" "}
+              <NavLink to="/SignUp">
+                {" "}
+                <h5 style={{ color: "gray" }}> SignUp ? </h5>{" "}
+              </NavLink>{" "}
             </div>
-            <div style={styles.Label}> <h1>LLM PlayGround </h1></div>
+            <div>
+              {" "}
+              <button
+                ref={buttonRef}
+                style={styles.submitButton}
+                onClick={Authenticate}
+                onMouseEnter={(event) => {
+                  event.currentTarget.style.cursor = "pointer";
+                }}
+              >
+                {" "}
+                <h4> Submit </h4>{" "}
+              </button>{" "}
+            </div>
+          </div>
         </div>
+        <div style={styles.Label}>
+          {" "}
+          <h1>LLM PlayGround </h1>
+        </div>
+      </div>
     </div>
   );
 };
