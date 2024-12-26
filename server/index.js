@@ -15,7 +15,13 @@ const ObjectId=mongoose.Types.ObjectId;
 
 
 // Middleware
-app.use(cors({ origin: 'http://localhost:5173'}));
+app.use(
+  cors({
+    origin: "*", // Allow all origins
+    methods: "GET,POST,PUT,DELETE,OPTIONS",
+    allowedHeaders: "Content-Type,Authorization",
+  })
+);
 app.use(express.json());
 
 
