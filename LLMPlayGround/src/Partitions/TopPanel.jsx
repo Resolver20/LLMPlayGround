@@ -2,7 +2,7 @@ import { useReactFlow ,Panel} from "@xyflow/react";
 import { MdOutlineSaveAlt } from "react-icons/md";
 import {useRef,useContext,useState,useEffect,useCallback} from "react";
 import {  useNavigate } from "react-router";
-import {MyTitleContext,MySavedContext,MyModeContext,MyLoadingContext} from "./Flow.jsx";
+import {MySavedContext,MyTopPanelContext} from "./Flow.jsx";
 import { AiOutlineClear } from "react-icons/ai";
 import { queryUserFlows } from "./SidePanel.jsx";
 import CircularProgress from "@mui/joy/CircularProgress";
@@ -15,11 +15,8 @@ import Tooltip from "@mui/joy/Tooltip";
 
 export const TopPanel=()=>{
     const rf=useReactFlow();
-    const [data,setData]=useContext(MySavedContext);
-    const titleInputRef=useContext(MyTitleContext);
-    const [isLoading, setIsLoading] = useContext(MyLoadingContext);
-    const [mode, setMode] = useContext(MyModeContext);
-    const [isTitleEmpty,setIsTitleEmpty]=useState(false);
+    const [savedFlows, setSavedFlows] = useContext(MySavedContext);
+    const {isLoading, setIsLoading, mode, setMode, titleInputRef,isTitleEmpty,setIsTitleEmpty} = useContext(MyTopPanelContext);
     const styles=getStyles(mode,isTitleEmpty);
     const navigate = useNavigate();
 
@@ -77,7 +74,7 @@ export const TopPanel=()=>{
           // console.log("response_data",res_data);
           toast.success(`${import.meta.env.VITE_ASSISTANT} Successfully Saved !!`);
           localStorage.setItem("CurrentFlow",res_data._id);
-          queryUserFlows(setData,setIsLoading);
+          queryUserFlows(setSavedFlows, setIsLoading);
         } catch (err) {
           console.log(err);
         }

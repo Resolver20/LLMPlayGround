@@ -43,33 +43,32 @@ const initialEdges = [
   ];
 
 
-export const MyTitleContext=createContext();
 export const MySavedContext=createContext();
-export const MyModeContext = createContext();
-export const MyLoadingContext = createContext();
+export const MyTopPanelContext=createContext();
 
 export const FlowWrapper=()=>{
     const [isLoading, setIsLoading] = useState(false);
     const titleInputRef=useRef();
-    const [data, setData] = useState([]);
+    const [isTitleEmpty, setIsTitleEmpty] = useState(false);
+    const [savedFlows, setSavedFlows] = useState([]);
+
+
     const value=localStorage.getItem("isLight");
     if(value===null){
       localStorage.setItem("isLight",false);
     }
+
+    //dark and light Modes 
     const [mode, setMode] = useState((localStorage.getItem("isLight")=="true")?true:false);
 
     return (
       <ReactFlowProvider>
-        <MyLoadingContext.Provider value={[isLoading, setIsLoading]}>
-          <MyModeContext.Provider value={[mode, setMode]}>
-            <MySavedContext.Provider value={[data, setData]}>
-              <MyTitleContext.Provider value={titleInputRef}>
-                <SidePanel />
-                <Flow />
-              </MyTitleContext.Provider>
-            </MySavedContext.Provider>
-          </MyModeContext.Provider>
-        </MyLoadingContext.Provider>
+        <MyTopPanelContext.Provider value={{isLoading, setIsLoading, mode, setMode, titleInputRef,isTitleEmpty,setIsTitleEmpty}} >
+          <MySavedContext.Provider value={[savedFlows, setSavedFlows]}>
+            <SidePanel />
+            <Flow />
+          </MySavedContext.Provider>
+        </MyTopPanelContext.Provider>
       </ReactFlowProvider>
     );
 };
@@ -79,10 +78,10 @@ const Flow=()=>{
     const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes);
     const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);
     const [nodeData,setnodeData]=useState("");
-    const [mode, setMode] = useContext(MyModeContext);
+    const {mode} = useContext(MyTopPanelContext);
     const styles=getStyles(mode);
     const rf = useReactFlow();
-    
+
 
     
     const OnNodesChange = useCallback(

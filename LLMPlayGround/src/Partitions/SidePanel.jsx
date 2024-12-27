@@ -4,52 +4,63 @@ import { BsCollection } from "react-icons/bs";
 import {useCallback,useEffect, useState,useContext} from "react";
 import { useReactFlow } from "@xyflow/react";
 import { RxCross1 } from "react-icons/rx";
-import { MyTitleContext,MySavedContext,MyModeContext,MyLoadingContext } from "./Flow.jsx";
+import { MySavedContext,MyTopPanelContext} from "./Flow.jsx";
 import { url } from "../App.jsx";
 import Tooltip from "@mui/joy/Tooltip";
+import { toast } from "sonner";
 
-export const queryUserFlows = async (setData,setIsLoading) => {
-    setIsLoading(true);
-    try {
-      const token = window.localStorage.getItem("access_token");
-      const response = await fetch(url + "/getSaved", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ token: token }),
-      });
-      if (!response.ok) {
-        throw new Error(`HTTP error! Status: ${response.status}`);
-      }
-      const data = await response.json();
-      // console.log("data ",data.message);
+export const queryUserFlows = async (setSavedFlows, setIsLoading) => {
 
-      setData(data.message);
-      setIsLoading(false);
-    } catch (error) {
-      console.log(error);
+  setIsLoading(true);
+  try {
+    const token = window.localStorage.getItem("access_token");
+    const response = await fetch(url + "/getSaved", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ token: token }),
+    });
+    if (!response.ok) {
+      throw new Error(`HTTP error! Status: ${response.status}`);
     }
-  };
+    const data = await response.json();
+    console.log("setting Saved Flows and IsLoading to false");
+    setSavedFlows(data.message);
+    setIsLoading(false);
+  } catch (error) {
+    console.log(error);
+  }
+};
 
 
-const DeleteFlow = async (elem,setData,rf,titleInputRef,setIsLoading) => {
+const DeleteFlow = async (
+  elem,
+  setSavedFlows,
+  rf,
+  titleInputRef,
+  setIsLoading,
+  setIsTitleEmpty
+) => {
   try {
     const token = window.localStorage.getItem("access_token");
     const response = await fetch(url + "/deleteData", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ token: token,title:elem.title }),
+      body: JSON.stringify({ token: token, title: elem.title }),
     });
     if (!response.ok) {
       throw new Error(`HTTP error! Status: ${response.status}`);
     }
     const data = await response.json();
     // console.log(data.message);
+    setIsTitleEmpty(false);
     localStorage.setItem("CurrentFlow", -1);
     rf.setNodes([]);
-    rf.setEdges( []);
+    rf.setEdges([]);
     rf.setViewport([]);
     titleInputRef.current.value = "";
-    queryUserFlows(setData,setIsLoading);
+    toast.info(`${import.meta.env.VITE_ASSISTANT}Deleted Flow ${elem.title} ! You are In New Flow `);
+    queryUserFlows(setSavedFlows, setIsLoading);
+
   } catch (error) {
     console.log(error);
   }
@@ -57,22 +68,21 @@ const DeleteFlow = async (elem,setData,rf,titleInputRef,setIsLoading) => {
 
 
 export const SidePanel = () => {
-  const [isLoading, setIsLoading] = useContext(MyLoadingContext);
+  const {setIsLoading, mode, titleInputRef,setIsTitleEmpty} = useContext(MyTopPanelContext);
   const rf=useReactFlow();
-  const [data,setData]=useContext(MySavedContext);
-  const  titleInputRef  = useContext(MyTitleContext);
-  const [mode, setMode] = useContext(MyModeContext);
+  const [savedFlows,setSavedFlows]=useContext(MySavedContext);
   const styles = getStyles(mode);
 
 
   useEffect(()=>{
-    queryUserFlows(setData,setIsLoading);
+    queryUserFlows(setSavedFlows, setIsLoading);
     localStorage.setItem("CurrentFlow",-1);
     // console.log("Tools.useEffect([]) => ", " called queryUserFlows ");
   },[]);
 
   const UpdateFlow=(elem,setIsLoading)=>{
     // console.log("id of the flow ", elem._id);
+    setIsTitleEmpty(false);
     localStorage.setItem("CurrentFlow",elem._id);
     const currentFlow=JSON.parse(elem.data);
     if(titleInputRef){
@@ -98,8 +108,8 @@ export const SidePanel = () => {
             <h3> Saved </h3>{" "}
           </div>
           <div style={styles.saved_item_container}>
-            {data
-              ? data.map((elem, index) => (
+            {savedFlows
+              ? savedFlows.map((elem, index) => (
                   <div
                     key={index}
                     style={styles.saved_item}
@@ -125,10 +135,11 @@ export const SidePanel = () => {
                       onClick={() => {
                         DeleteFlow(
                           elem,
-                          setData,
+                          setSavedFlows,
                           rf,
                           titleInputRef,
-                          setIsLoading
+                          setIsLoading,
+                          setIsTitleEmpty
                         );
                       }}
                     >

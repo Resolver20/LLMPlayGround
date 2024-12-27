@@ -1,11 +1,11 @@
 import {useState,useContext} from "react";
 import { FiCodepen } from "react-icons/fi";
 import { BsInputCursor } from "react-icons/bs";
-import { MyModeContext } from "../Partitions/Flow.jsx";
+import { MyTopPanelContext } from "../Partitions/Flow.jsx";
 import Tooltip from "@mui/joy/Tooltip";
 
 export const DraggableNode = ({ type,label }) => {
-   const [mode, setMode] = useContext(MyModeContext);
+   const {mode}= useContext(MyTopPanelContext);
    const styles=getStyles(mode);
 
   const onDragStart = (event, nodeType) => {
