@@ -11,7 +11,7 @@ import { toast } from "sonner";
 
 export const queryUserFlows = async (setSavedFlows, setIsLoading) => {
 
-  setIsLoading(true);
+  await setIsLoading(true);
   try {
     const token = window.localStorage.getItem("access_token");
     const response = await fetch(url + "/getSaved", {
@@ -24,8 +24,8 @@ export const queryUserFlows = async (setSavedFlows, setIsLoading) => {
     }
     const data = await response.json();
     console.log("setting Saved Flows and IsLoading to false");
-    setSavedFlows(data.message);
-    setIsLoading(false);
+    await setSavedFlows(data.message);
+    await setIsLoading(false);
   } catch (error) {
     console.log(error);
   }
@@ -58,7 +58,7 @@ const DeleteFlow = async (
     rf.setEdges([]);
     rf.setViewport([]);
     titleInputRef.current.value = "";
-    queryUserFlows(setSavedFlows, setIsLoading);
+    await queryUserFlows(setSavedFlows, setIsLoading);
     toast.info(`${import.meta.env.VITE_ASSISTANT}Deleted Flow ${elem.title} ! You are In New Flow `);
 
   } catch (error) {
