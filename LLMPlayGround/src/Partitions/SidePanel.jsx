@@ -123,28 +123,42 @@ export const SidePanel = () => {
                     <button
                       style={styles.saved_item_button}
                       onClick={() => UpdateFlow(elem, setIsLoading)}
+                      onMouseEnter={(event) => { event.currentTarget.style.cursor = "pointer"; }}
                     >
                       {elem.title}
                     </button>
-                      <div
-                        style={styles.icon_div}
-                        >
-                        <Tooltip title="Delete Flow" variant="soft" placement="right-end" >
-                        <span >
+                    <div style={styles.icon_div}>
+                      <Tooltip
+                        title="Delete Flow"
+                        variant="soft"
+                        placement="right-end"
+                      >
+                        <span>
                           <RxCross1
-                              onClick={() => { DeleteFlow( elem, setSavedFlows, rf, titleInputRef, setIsLoading, setIsTitleEmpty ); }}
+                            onClick={() => {
+                              DeleteFlow(
+                                elem,
+                                setSavedFlows,
+                                rf,
+                                titleInputRef,
+                                setIsLoading,
+                                setIsTitleEmpty
+                              );
+                            }}
                             style={styles.cross_icon}
                             onMouseEnter={(event) => {
                               event.currentTarget.style.cursor = "pointer";
                               event.currentTarget.style.color = "red";
-                             }}
+                            }}
                             onMouseLeave={(event) => {
-                                event.currentTarget.style.color = mode ? "white" : "black";
+                              event.currentTarget.style.color = mode
+                                ? "white"
+                                : "black";
                             }}
                           />
                         </span>
-                    </Tooltip>
-                      </div>
+                      </Tooltip>
+                    </div>
                   </div>
                 ))
               : "none"}
