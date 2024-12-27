@@ -49,6 +49,7 @@ const SignUp = () => {
             }
 
             const data = await response.json(); 
+            console.log("Message",data.message);
             if(data.id==-1){
                   toast.error("Username already taken. Please choose another.");
                   return;

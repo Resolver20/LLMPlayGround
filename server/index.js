@@ -212,6 +212,7 @@ app.post("/save",async (req,res)=>{
 app.post("/signup", async (req, res) => {
   const { username , password } = req.body;
   const isExisting = await User.find({ username: username });
+  console.log("isExisting=>", isExisting)
   if(isExisting!=0){
         res.json({ message: "User already Exists !!", id:-1});
         return ;
