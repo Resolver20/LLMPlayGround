@@ -187,7 +187,6 @@ app.post("/save",async (req,res)=>{
   }
 
   
-  const isExisting = await DataFlow.find({ userId: userId, title:title });
 
   if(id==-1){
     const df = new DataFlow({userId:userId,title:title,data:data});
@@ -199,7 +198,6 @@ app.post("/save",async (req,res)=>{
     console.log("Updated");
 
   }
-  console.log("isExisting=>", isExisting.length );
 
 
 
@@ -213,8 +211,12 @@ app.post("/save",async (req,res)=>{
 
 app.post("/signup", async (req, res) => {
   const { username , password } = req.body;
+  const isExisting = await User.find({ username: username });
+  if(isExisting!=0){
+        res.json({ message: "User already Exists !!", id:-1});
+        return ;
+  }
   const hashedPassword = await bcrypt.hash(password, 10);
-
   const newUser = new User({ username , password: hashedPassword });
   await newUser.save();
   console.log("Hello");

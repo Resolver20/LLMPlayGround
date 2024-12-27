@@ -1,6 +1,7 @@
 import { useState, useRef } from "react";
 import { NavLink ,useNavigate} from "react-router";
 import { url } from "../App.jsx";
+import { Toaster, toast } from "sonner";
 
 
 
@@ -14,10 +15,18 @@ const SignUp = () => {
   const [feedback,setFeedback]=useState("");
   const navigate=useNavigate();
 
-   const checkForEnter = (event) => {
+   const checkForEnter = (event,position) => {
      if (event.key === "Enter") {
-       event.preventDefault();
-       registerRef.current.click();
+        event.preventDefault();
+        if (position == "username") {
+           pwdRef.current.focus();
+         }
+        else if (position == "pwd") {
+          rePwdRef.current.focus();
+        }
+        else{
+          registerRef.current.click();
+        }
      }
    };
 
@@ -40,11 +49,16 @@ const SignUp = () => {
             }
 
             const data = await response.json(); 
-            // console.log(data); 
+            if(data.id==-1){
+                  toast.error("Username already taken. Please choose another.");
+                  return;
+            }
+
             navigate("/",{state:{"username":userName}});
 
+
           } catch (error) {
-            setFeedback("Server Error");
+            toast.error("Server Error");
             pwdRef.current.style.borderColor = "black";
             rePwdRef.current.style.borderColor = "black";
             console.error("Error:", error); 
@@ -59,18 +73,20 @@ const SignUp = () => {
              rePwdRef.current.style.borderColor="red";
              setBoolean(false);
              setFeedback("Passwords do not match");
+              toast.error(`${"Passwords do not match"}`);
+
         }
   }
   return (
     <div style={styles.main_div}>
+              <Toaster richColors position="top-left" />
+
       <div style={styles.loginForm}>
         <div>
-          <div style={styles.input_container}> <h3> Username </h3> <input ref={usernameRef} style={styles.input} type="text" /></div>
-          <div style={styles.input_container}> <h3> Password </h3> <input  type="password" ref={pwdRef} style={styles.input}  /> </div>
-          <div style={styles.input_container}> <h3>Re-enter your password </h3> <input type="password" ref={rePwdRef} onKeyDown={checkForEnter}  style={styles.input} /> </div>
+          <div style={styles.input_container}> <h3> Username </h3> <input ref={usernameRef} onKeyDown={(event) => checkForEnter(event, "username")} style={styles.input}  type="text" /></div>
+          <div style={styles.input_container}> <h3> Password </h3> <input  type="password" ref={pwdRef} onKeyDown={(event) => checkForEnter(event, "pwd")} style={styles.input}  /> </div>
+          <div style={styles.input_container}> <h3>Re-enter your password </h3> <input type="password" ref={rePwdRef}  onKeyDown={(event) => checkForEnter(event, "rePwd")} style={styles.input} /> </div>
           <div style={styles.input_container}> 
-            <div> <h5 style={{color:"red"}} hidden={boolean} > {feedback} </h5></div>
-            <div> </div> 
             <div> <NavLink to="/"> <h5 style={{color:"gray"}}>  { " Go Back " }</h5> </NavLink> </div>
             <button style={styles.submitButton} ref={registerRef} onClick={Register} onMouseEnter={(event)=>{event.currentTarget.style.cursor = "pointer";}} > <h4> Register </h4> </button> 
             </div> 

@@ -42,10 +42,16 @@ const LoginPage = () => {
     };
    }
   
-   const checkForEnter = (event) => {
+   const checkForEnter = (event,position) => {
+    
     if (event.key === "Enter") {
       event.preventDefault();
-      buttonRef.current.click(); 
+      if (position == "username") {
+        passwordRef.current.focus();
+      }
+      else{
+        buttonRef.current.click(); 
+      }
     }
   }
 
@@ -58,7 +64,12 @@ const LoginPage = () => {
           <div style={styles.input_container}>
             {" "}
             <h3> Username </h3>{" "}
-            <input ref={usernameRef} style={styles.input} type="text" />
+            <input
+              ref={usernameRef}
+              style={styles.input}
+              onKeyDown={(event) => checkForEnter(event, "username")}
+              type="text"
+            />
           </div>
           <div style={styles.input_container}>
             {" "}
@@ -66,7 +77,7 @@ const LoginPage = () => {
             <input
               ref={passwordRef}
               style={styles.input}
-              onKeyDown={checkForEnter}
+              onKeyDown={(event) => checkForEnter(event, "password")}
               type="password"
             />{" "}
           </div>
