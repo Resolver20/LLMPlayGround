@@ -72,7 +72,12 @@ export const TopPanel=()=>{
           }
           const res_data = await response.json();
           // console.log("response_data",res_data);
-          toast.success(`${import.meta.env.VITE_ASSISTANT} Successfully Saved !!`);
+          if (data_id == -1) {
+            toast.success( `${import.meta.env.VITE_ASSISTANT} Successfully Saved !!` );
+          }
+          else{
+            toast.success( `${import.meta.env.VITE_ASSISTANT} Successfully Updated !!` );
+          }
           localStorage.setItem("CurrentFlow",res_data._id);
           queryUserFlows(setSavedFlows, setIsLoading);
         } catch (err) {

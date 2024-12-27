@@ -1,7 +1,7 @@
 import { DraggableNode } from "../NodeTypes/DraggableNode.jsx";
 import { NavLink } from "react-router";
 import { BsCollection } from "react-icons/bs";
-import {useCallback,useEffect, useState,useContext} from "react";
+import {useCallback,useEffect, useState,useContext,useRef} from "react";
 import { useReactFlow } from "@xyflow/react";
 import { RxCross1 } from "react-icons/rx";
 import { MySavedContext,MyTopPanelContext} from "./Flow.jsx";
@@ -73,7 +73,6 @@ export const SidePanel = () => {
   const [savedFlows,setSavedFlows]=useContext(MySavedContext);
   const styles = getStyles(mode);
 
-
   useEffect(()=>{
     queryUserFlows(setSavedFlows, setIsLoading);
     localStorage.setItem("CurrentFlow",-1);
@@ -125,36 +124,27 @@ export const SidePanel = () => {
                       style={styles.saved_item_button}
                       onClick={() => UpdateFlow(elem, setIsLoading)}
                     >
-                      <h5>{elem.title}</h5>
+                      {elem.title}
                     </button>
-                    <button
-                      style={styles.icon_button}
-                      onMouseEnter={(event) => {
-                        event.currentTarget.style.cursor = "pointer";
-                      }}
-                      onClick={() => {
-                        DeleteFlow(
-                          elem,
-                          setSavedFlows,
-                          rf,
-                          titleInputRef,
-                          setIsLoading,
-                          setIsTitleEmpty
-                        );
-                      }}
-                    >
-                      <RxCross1
-                        style={styles.cross_icon}
-                        onMouseEnter={(event) => {
-                          event.currentTarget.style.color = "red";
-                        }}
-                        onMouseLeave={(event) => {
-                          event.currentTarget.style.color = mode
-                            ? "white"
-                            : "black";
-                        }}
-                      />
-                    </button>
+                      <div
+                        style={styles.icon_div}
+                        >
+                        <Tooltip title="Delete Flow" variant="soft" placement="right-end" >
+                        <span >
+                          <RxCross1
+                              onClick={() => { DeleteFlow( elem, setSavedFlows, rf, titleInputRef, setIsLoading, setIsTitleEmpty ); }}
+                            style={styles.cross_icon}
+                            onMouseEnter={(event) => {
+                              event.currentTarget.style.cursor = "pointer";
+                              event.currentTarget.style.color = "red";
+                             }}
+                            onMouseLeave={(event) => {
+                                event.currentTarget.style.color = mode ? "white" : "black";
+                            }}
+                          />
+                        </span>
+                    </Tooltip>
+                      </div>
                   </div>
                 ))
               : "none"}
@@ -215,10 +205,13 @@ const getStyles = (mode) => ({
   },
 
   saved_item_container: {
-    backgroundColor: mode ? "white" : "black",
+    // backgroundColor: mode ? "white" : "black",
     // backgroundColor: "orange",
-    // overflowY:"scroll",
+    backgroundColor: "transparent",
+    overflowY: "scroll",
     display: "flex",
+    scrollbarWidth: "none", // For Firefox
+    msOverflowStyle: "none", // For IE and Edge
     flexDirection: "column",
     alignItems: "flex-start",
     justifyContent: "flex-start",
@@ -235,11 +228,17 @@ const getStyles = (mode) => ({
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "center",
+    // backgroundColor: "pink",
     backgroundColor: "transparent",
   },
   saved_item_button: {
-    width: "100%",
+    width: "80%",
+
     height: "30px",
+    whiteSpace: "nowrap",
+    overflow: "hidden",
+    textOverflow: "ellipsis ellipsis",
+    // backgroundColor: "red",
     backgroundColor: "transparent",
     color: mode ? "black" : "white",
     border: "none",
@@ -248,10 +247,12 @@ const getStyles = (mode) => ({
     alignItems: "center",
     justifyContent: "space-between",
   },
-  icon_button: {
+  icon_div: {
+    // backgroundColor: "gray",
     backgroundColor: "transparent",
+
     height: "100%",
-    width: "40px",
+    width: "20%",
     display: "flex",
     flexDirection: "row",
     alignItems: "center",
@@ -261,7 +262,7 @@ const getStyles = (mode) => ({
   cross_icon: {
     width: "10px",
     height: "30px",
-    color: mode?"white":"black",
+    color: mode ? "white" : "black",
   },
   logout: {
     position: "absolute",
