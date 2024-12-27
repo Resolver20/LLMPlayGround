@@ -58,8 +58,8 @@ const DeleteFlow = async (
     rf.setEdges([]);
     rf.setViewport([]);
     titleInputRef.current.value = "";
-    toast.info(`${import.meta.env.VITE_ASSISTANT}Deleted Flow ${elem.title} ! You are In New Flow `);
     queryUserFlows(setSavedFlows, setIsLoading);
+    toast.info(`${import.meta.env.VITE_ASSISTANT}Deleted Flow ${elem.title} ! You are In New Flow `);
 
   } catch (error) {
     console.log(error);
