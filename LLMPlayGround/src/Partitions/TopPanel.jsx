@@ -55,7 +55,7 @@ export const TopPanel=()=>{
         setIsTitleEmpty(false);
         try {
           const response = await fetch(
-            url + "/save",
+            url + "/operation/save",
             {
               method: "POST",
               headers: { "Content-Type": "application/json" },

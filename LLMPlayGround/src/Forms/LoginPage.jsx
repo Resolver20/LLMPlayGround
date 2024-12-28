@@ -27,7 +27,7 @@ const LoginPage = () => {
     const pwd=passwordRef.current.value;
     try{
 
-      const response = await fetch((url + `/login`), { method: "POST", headers :{"Content-Type":"application/json"},  body: JSON.stringify({ username :userName,password:pwd} )})
+      const response = await fetch((url + `/Auth/login`), { method: "POST", headers :{"Content-Type":"application/json"},  body: JSON.stringify({ username :userName,password:pwd} )})
       if (!response.ok) { 
           throw new Error(`HTTP error! Status: ${response.status}`);
       }

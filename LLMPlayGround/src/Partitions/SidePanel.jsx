@@ -14,7 +14,7 @@ export const queryUserFlows = async (setSavedFlows, setIsLoading) => {
   await setIsLoading(true);
   try {
     const token = window.localStorage.getItem("access_token");
-    const response = await fetch(url + "/getSaved", {
+    const response = await fetch(url + "/operation/getSaved", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ token: token }),
@@ -42,7 +42,7 @@ const DeleteFlow = async (
 ) => {
   try {
     const token = window.localStorage.getItem("access_token");
-    const response = await fetch(url + "/deleteData", {
+    const response = await fetch(url + "/operation/deleteData", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ token: token, title: elem.title }),

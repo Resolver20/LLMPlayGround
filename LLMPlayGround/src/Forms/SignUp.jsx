@@ -36,7 +36,7 @@ const SignUp = () => {
        const pwd2 = rePwdRef.current.value;
        if(pwd1===pwd2){
           try {
-            const response = await fetch(url + "/signup", {
+            const response = await fetch(url + "/Auth/signup", {
               method: "POST",
               headers: {
                 "Content-Type": "application/json",

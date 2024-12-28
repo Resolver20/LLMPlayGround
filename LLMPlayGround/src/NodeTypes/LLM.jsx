@@ -104,7 +104,7 @@ export const LLM = ({ id, data }) => {
       streamEmitter.removeAllListeners("end");
       setOutput("");
 
-      fetch_LLama(event, data, streamEmitter, id, "/queryGrok");
+      fetch_LLama(event, data, streamEmitter, id, "/LLMQuery/Groq");
       let fragment_chunk = "";
       streamEmitter.on("data", (chunk) => {
         onBooleanChange(true);
