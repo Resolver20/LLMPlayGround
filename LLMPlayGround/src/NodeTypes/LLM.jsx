@@ -11,12 +11,14 @@ import { fetch_LLama } from "../JavaScript/Request";
 import { EventEmitter } from "events";
 import { FiCodepen } from "react-icons/fi";
 import "../css/LLM.css";
+import ReactMarkdown from "react-markdown";
 
 
 export const LLM = ({ id, data }) => {
   
   const processed_data = Object.entries(data.input_data) .filter(([key]) => key !== id) .map(([_, value]) => value);
   const [inputValue, setInputValue] = useState(processed_data);
+  // console.log("processed_data =>", processed_data);
   const [boolean, setBoolean] = useState(false);
 
   const buttonRef = useRef();
@@ -176,7 +178,8 @@ export const LLM = ({ id, data }) => {
               inputValue.map((info, index) => (
                 <div key={index} style={styles.inputRow}>
                   <div>{index + 1}.</div>
-                  <div>{info}</div>
+                  {/* <div> <ReactMarkdown> {JSON.stringify(info)} </ReactMarkdown> </div> */}
+                  <div>  {info}  </div>
                 </div>
               ))
             ) : (
@@ -186,7 +189,9 @@ export const LLM = ({ id, data }) => {
         </div>
 
         <div style={styles.outputContainer} className="nowheel">
+        <ReactMarkdown>
           {output || "Awaiting output..."}
+        </ReactMarkdown>
         </div>
       </div>
 
