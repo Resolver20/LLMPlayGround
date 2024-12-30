@@ -52,7 +52,6 @@ export const FlowWrapper=()=>{
     const [isTitleEmpty, setIsTitleEmpty] = useState(false);
     const [savedFlows, setSavedFlows] = useState([]);
 
-
     const value=localStorage.getItem("isLight");
     if(value===null){
       localStorage.setItem("isLight",false);
@@ -74,9 +73,9 @@ export const FlowWrapper=()=>{
 };
 
 const Flow=()=>{
-  // console.log("Rendering  Flow ");
+  console.log("Rendering  Flow ");
   const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes);
-  // console.log(nodes);
+  console.log(nodes);
     const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);
     const [nodeData,setnodeData]=useState("");
     const {mode} = useContext(MyTopPanelContext);
@@ -92,7 +91,31 @@ const Flow=()=>{
       [setNodes]
     );
     const OnEdgesChange = useCallback(
-      (changes) => setEdges((eds) => applyEdgeChanges(changes, eds)),
+      (changes) => {
+        // console.log("changes =>",changes);
+        const edge_data=rf.getEdges().filter((elem)=>elem.id==changes[0].id);
+        if(changes[0].type=="remove"){
+          // console.log("edge Removed");
+          const targetId=edge_data[0].target; 
+          const sourceId=edge_data[0].source; 
+
+          
+          rf.updateNode(targetId, (node) =>{
+            const input_data_list = node.data.input_data;
+            // console.log("input_datas =>", input_data_list);
+            const updated_input_data_list = Object.keys(input_data_list) // If you need the keys, use Object.keys()
+              .filter((key) => key !== sourceId) // Filter out the key you don't want
+              .reduce((result, key) => {
+                result[key] = input_data_list[key]; // Rebuild the object with the filtered keys
+                return result;
+              }, {}); // Starting with an empty object
+
+            console.log("input_datas =>", updated_input_data_list);
+            return { ...node, data: { ...(node.data || []),"input_data":updated_input_data_list } };
+          } );
+        }
+        setEdges((eds) => applyEdgeChanges(changes, eds))
+      },
       [setEdges]
     );
     
