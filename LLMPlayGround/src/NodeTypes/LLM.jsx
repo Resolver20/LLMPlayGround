@@ -13,6 +13,13 @@ import { FiCodepen } from "react-icons/fi";
 import "../css/LLM.css";
 import ReactMarkdown from "react-markdown";
 
+import { CgArrowsExpandLeft } from "react-icons/cg";
+import { handleMouseDown } from "../Functionality/resizing_llm";
+import { RxClipboardCopy } from "react-icons/rx";
+import { toast } from "sonner";
+
+
+import { BottomIcons } from "./LLMComponents/BottomIcons";
 
 export const LLM = ({ id, data }) => {
   
@@ -26,12 +33,16 @@ export const LLM = ({ id, data }) => {
   const [output, setOutput] = useState(data.node_data);
   const current_node = rf.getNodes().find((node) => node.id === id);
   const node = rf.getNode(id);
-
   const isMounted1=useRef(false);
   const isMounted2=useRef(false);
   const isMounted3=useRef(false);
   // console.log("LLM (message : data )=>  ", data);
   // console.log("LLM Node ",current_node);
+
+  const [llm_width, set_llm_width] = useState(data.node_width); // initial width
+  const [llm_height, set_llm_height] = useState(data.node_height); // initial height
+  const llm_resizable_ref = useRef(null);
+  const styles = getStyles(llm_width,llm_height );
 
   const connected_ids = getOutgoers(node, rf.getNodes(), rf.getEdges()).map(
     (node) => node.id
@@ -170,7 +181,7 @@ export const LLM = ({ id, data }) => {
 
       <Handle type="target" position={Position.Left} />
 
-      <div style={styles.LLM_container}>
+      <div style={styles.LLM_container} ref={llm_resizable_ref}>
         <div style={styles.LLM_inputContainer}>
           <div style={styles.header}>Input</div>
           <div style={styles.inputContent} className="nowheel">
@@ -179,11 +190,7 @@ export const LLM = ({ id, data }) => {
                 <div key={index} style={styles.inputRow}>
                   <div>{index + 1}.</div>
                   <div className="clamp-text">
-                    {/* <ReactMarkdown> {info} </ReactMarkdown> */}
-                    <ReactMarkdown>
-
-                    {info}
-                    </ReactMarkdown>
+                    <ReactMarkdown>{info}</ReactMarkdown>
                   </div>
                 </div>
               ))
@@ -194,21 +201,22 @@ export const LLM = ({ id, data }) => {
         </div>
 
         <div style={styles.LLM_outputContainer} className="nowheel">
-                    {/* <div style={styles.header}>Output</div> */}
-
-          <ReactMarkdown >{output || "No Output..."}</ReactMarkdown>
+          <ReactMarkdown>
+            {output || "Awaiting for your Query..."}
+          </ReactMarkdown>
         </div>
       </div>
+      <BottomIcons props={{llm_resizable_ref, set_llm_height, set_llm_width, rf, id,output}} />
 
       <Handle type="source" position={Position.Right} />
     </>
   );
 };
 
-const styles = {
+const getStyles = (llm_width, llm_height) => ({
   LLM_container: {
-    width: "300px",
-    height: "300px",
+    width: llm_width,
+    height: llm_height,
     backgroundColor: "#fff",
     border: "1px solid #ddd",
     borderRadius: "12px",
@@ -245,7 +253,7 @@ const styles = {
   },
   LLM_outputContainer: {
     flex: 1,
-    padding:"10px",
+    padding: "10px",
     fontSize: "14px",
     color: "#333",
     overflowY: "auto",
@@ -271,4 +279,4 @@ const styles = {
   icon: {
     fontSize: "18px",
   },
-};
+});

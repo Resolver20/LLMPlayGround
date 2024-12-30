@@ -74,9 +74,9 @@ export const FlowWrapper=()=>{
 };
 
 const Flow=()=>{
-  console.log("Rendering  Flow ");
+  // console.log("Rendering  Flow ");
   const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes);
-  console.log(nodes);
+  // console.log(nodes);
     const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);
     const [nodeData,setnodeData]=useState("");
     const {mode} = useContext(MyTopPanelContext);
@@ -174,7 +174,9 @@ const Flow=()=>{
               "input_data":{},
               "output_data":{},
               "update_from":"",
-              "boolean_state":false
+              "boolean_state":false,
+              "node_width":300,
+              "node_height":300
 
           },
           };
