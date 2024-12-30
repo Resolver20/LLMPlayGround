@@ -1,16 +1,16 @@
 /* Specific to a class */
 .custom-scrollbar {
     scrollbar-width: none;
-    /* For Firefox */
     scrollbar-color: pink #f1f1f1;
-    /* For Firefox */
 }
-/* 
-.custom-scrollbar::-webkit-scrollbar {
-    width: 12px;
+.clamp-text {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    /* Limit to 2 lines */
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
-
-.custom-scrollbar::-webkit-scrollbar-thumb {
-    border-radius: 8px;
-    background: pink;
-} */
+p{
+    margin:0px;
+}

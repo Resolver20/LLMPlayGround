@@ -74,8 +74,9 @@ export const FlowWrapper=()=>{
 };
 
 const Flow=()=>{
-    console.log("Rendering  Flow ");
-    const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes);
+  console.log("Rendering  Flow ");
+  const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes);
+  console.log(nodes);
     const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);
     const [nodeData,setnodeData]=useState("");
     const {mode} = useContext(MyTopPanelContext);

@@ -170,16 +170,21 @@ export const LLM = ({ id, data }) => {
 
       <Handle type="target" position={Position.Left} />
 
-      <div style={styles.container}>
-        <div style={styles.inputContainer}>
+      <div style={styles.LLM_container}>
+        <div style={styles.LLM_inputContainer}>
           <div style={styles.header}>Input</div>
           <div style={styles.inputContent} className="nowheel">
             {inputValue.length ? (
               inputValue.map((info, index) => (
                 <div key={index} style={styles.inputRow}>
                   <div>{index + 1}.</div>
-                  {/* <div> <ReactMarkdown> {JSON.stringify(info)} </ReactMarkdown> </div> */}
-                  <div>  {info}  </div>
+                  <div className="clamp-text">
+                    {/* <ReactMarkdown> {info} </ReactMarkdown> */}
+                    <ReactMarkdown>
+
+                    {info}
+                    </ReactMarkdown>
+                  </div>
                 </div>
               ))
             ) : (
@@ -188,10 +193,10 @@ export const LLM = ({ id, data }) => {
           </div>
         </div>
 
-        <div style={styles.outputContainer} className="nowheel">
-        <ReactMarkdown>
-          {output || "Awaiting output..."}
-        </ReactMarkdown>
+        <div style={styles.LLM_outputContainer} className="nowheel">
+                    {/* <div style={styles.header}>Output</div> */}
+
+          <ReactMarkdown >{output || "No Output..."}</ReactMarkdown>
         </div>
       </div>
 
@@ -201,7 +206,7 @@ export const LLM = ({ id, data }) => {
 };
 
 const styles = {
-  container: {
+  LLM_container: {
     width: "300px",
     height: "300px",
     backgroundColor: "#fff",
@@ -212,7 +217,7 @@ const styles = {
     flexDirection: "column",
     overflow: "hidden",
   },
-  inputContainer: {
+  LLM_inputContainer: {
     height: "120px",
     padding: "10px",
     borderBottom: "1px solid #ddd",
@@ -238,9 +243,9 @@ const styles = {
     fontStyle: "italic",
     color: "#999",
   },
-  outputContainer: {
+  LLM_outputContainer: {
     flex: 1,
-    padding: "10px",
+    padding:"10px",
     fontSize: "14px",
     color: "#333",
     overflowY: "auto",
