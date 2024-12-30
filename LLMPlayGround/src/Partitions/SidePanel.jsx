@@ -8,13 +8,14 @@ import { MySavedContext,MyTopPanelContext} from "./Flow.jsx";
 import { url } from "../App.jsx";
 import Tooltip from "@mui/joy/Tooltip";
 import { toast } from "sonner";
+import { useNavigate } from "react-router";
+import {authenticationFailed} from "../JavaScript/EasterEggs.js"
 
-export const queryUserFlows = async (setSavedFlows, setIsLoading) => {
-
+export const queryUserFlows = async (setSavedFlows, setIsLoading, navigate) => {
   await setIsLoading(true);
   try {
     const token = window.localStorage.getItem("access_token");
-    const response = await fetch(url + "/operation/getSaved", {
+    const response = await fetch(url + import.meta.env.VITE_GET_SAVED, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ token: token }),
@@ -22,9 +23,15 @@ export const queryUserFlows = async (setSavedFlows, setIsLoading) => {
     if (!response.ok) {
       throw new Error(`HTTP error! Status: ${response.status}`);
     }
-    const data = await response.json();
+
+    const res_data = await response.json();
+    if (res_data.failure) {
+      authenticationFailed(navigate);
+      return;
+    }
+
     console.log("setting Saved Flows and IsLoading to false");
-    await setSavedFlows(data.message);
+    await setSavedFlows(res_data.message);
     await setIsLoading(false);
   } catch (error) {
     console.log(error);
@@ -38,11 +45,12 @@ const DeleteFlow = async (
   rf,
   titleInputRef,
   setIsLoading,
-  setIsTitleEmpty
+  setIsTitleEmpty,
+  navigate
 ) => {
   try {
     const token = window.localStorage.getItem("access_token");
-    const response = await fetch(url + "/operation/deleteData", {
+    const response = await fetch(url + import.meta.env.VITE_DELETE_DATA, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ token: token, title: elem.title }),
@@ -50,8 +58,10 @@ const DeleteFlow = async (
     if (!response.ok) {
       throw new Error(`HTTP error! Status: ${response.status}`);
     }
-    const data = await response.json();
-    // console.log(data.message);
+    const res_data = await response.json();
+
+    if (res_data.failure) { authenticationFailed(navigate); return; }
+    
     setIsTitleEmpty(false);
     localStorage.setItem("CurrentFlow", -1);
     rf.setNodes([]);
@@ -59,8 +69,11 @@ const DeleteFlow = async (
     rf.setViewport([]);
     titleInputRef.current.value = "";
     await queryUserFlows(setSavedFlows, setIsLoading);
-    toast.info(`${import.meta.env.VITE_ASSISTANT}Deleted Flow ${elem.title} ! You are In New Flow `);
-
+    toast.info(
+      `${import.meta.env.VITE_ASSISTANT}Deleted Flow ${
+        elem.title
+      } ! You are In New Flow `
+    );
   } catch (error) {
     console.log(error);
   }
@@ -72,9 +85,10 @@ export const SidePanel = () => {
   const rf=useReactFlow();
   const [savedFlows,setSavedFlows]=useContext(MySavedContext);
   const styles = getStyles(mode);
+  const navigate = useNavigate();
 
   useEffect(()=>{
-    queryUserFlows(setSavedFlows, setIsLoading);
+    queryUserFlows(setSavedFlows, setIsLoading, navigate);
     localStorage.setItem("CurrentFlow",-1);
     // console.log("Tools.useEffect([]) => ", " called queryUserFlows ");
   },[]);
@@ -142,7 +156,8 @@ export const SidePanel = () => {
                                 rf,
                                 titleInputRef,
                                 setIsLoading,
-                                setIsTitleEmpty
+                                setIsTitleEmpty,
+                                navigate
                               );
                             }}
                             style={styles.cross_icon}

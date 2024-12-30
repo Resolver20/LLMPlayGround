@@ -8,17 +8,27 @@ dotenv.config({ path: "./.env" });
 
 const AuthRoutes = express.Router();
 
+export const TokenAuthentication=(token)=>{
+
+  try {
+    const verification = jwt.verify(token, process.env.VITE_JWT_SECRET_KEY, { algorithms: ["HS256"] });
+    return ("verified");
+  } catch (error) {
+    return (`found error ${error}`)
+  }
+
+}
+
 AuthRoutes.post("/signup", async (req, res) => {
   const { username, password } = req.body;
+
   const isExisting = await User.find({ username: username });
-  if (isExisting != 0) {
-    res.json({ message: "User already Exists !!", id: -1 });
-    return;
-  }
+  if (isExisting != 0) { res.json({ message: "User already Exists !!", id: -1 }); return; }
   const hashedPassword = await bcrypt.hash(password, 10);
+
   const newUser = new User({ username, password: hashedPassword });
   await newUser.save();
-  console.log("Hello");
+
 
   res.json({
     message: "User created successfully!",
@@ -37,6 +47,7 @@ AuthRoutes.post("/login", async (req, res) => {
   if (!isMatch) return res.status(401).json({ error: "Invalid credentials" });
 
   const jwt_secret = process.env.VITE_JWT_SECRET_KEY;
+
   const token = jwt.sign({ user_id: user._id }, jwt_secret, {
     expiresIn: "365d",
   });
@@ -45,3 +56,4 @@ AuthRoutes.post("/login", async (req, res) => {
 });
 
 export default AuthRoutes;
+

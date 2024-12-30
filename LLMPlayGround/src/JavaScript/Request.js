@@ -1,6 +1,8 @@
 import { url } from "../App.jsx";
+import { toast } from "sonner";
+import { authenticationFailed } from "./EasterEggs.js";
 
-export async function fetch_LLama(event, data, streamEmitter, id, queryType) {
+export async function fetch_LLama(event, data, streamEmitter, id, queryType,navigate) {
   const values = [];
   for (let i in data.input_data) {
     values.push(data.input_data[i]);
@@ -20,9 +22,18 @@ export async function fetch_LLama(event, data, streamEmitter, id, queryType) {
         query_data: query,
       }),
     });
+    
     if (!response.ok) {
-      throw new Error(`HTTP error! Status: ${response.status}`);
+      const res_data=await response.json();
+      if(res_data.failure){
+        authenticationFailed(navigate);
+        return;
+      }
+      else{
+        throw new Error(`HTTP error! Status: ${response}`);
+      }
     }
+
     const reader = response.body.getReader();
     const decoder = new TextDecoder();
     while (true) {

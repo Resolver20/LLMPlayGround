@@ -92,7 +92,9 @@ const Flow=()=>{
     );
     const OnEdgesChange = useCallback(
       (changes) => {
-        // console.log("changes =>",changes);
+        console.log("changes =>",changes);
+        if(changes.length!=0){
+
         const edge_data=rf.getEdges().filter((elem)=>elem.id==changes[0].id);
         if(changes[0].type=="remove"){
           // console.log("edge Removed");
@@ -114,6 +116,7 @@ const Flow=()=>{
             return { ...node, data: { ...(node.data || []),"input_data":updated_input_data_list } };
           } );
         }
+      }
         setEdges((eds) => applyEdgeChanges(changes, eds))
       },
       [setEdges]

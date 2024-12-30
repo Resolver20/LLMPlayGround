@@ -12,7 +12,7 @@ import { EventEmitter } from "events";
 import { FiCodepen } from "react-icons/fi";
 import "../css/LLM.css";
 import ReactMarkdown from "react-markdown";
-
+import { useNavigate } from "react-router";
 import { CgArrowsExpandLeft } from "react-icons/cg";
 import { handleMouseDown } from "../Functionality/resizing_llm";
 import { RxClipboardCopy } from "react-icons/rx";
@@ -27,6 +27,7 @@ export const LLM = ({ id, data }) => {
   const [inputValue, setInputValue] = useState(processed_data);
   // console.log("processed_data =>", processed_data);
   const [boolean, setBoolean] = useState(false);
+  const navigate = useNavigate();
 
   const buttonRef = useRef();
   const rf = useReactFlow();
@@ -117,7 +118,7 @@ export const LLM = ({ id, data }) => {
       streamEmitter.removeAllListeners("end");
       setOutput("");
 
-      fetch_LLama(event, data, streamEmitter, id, "/LLMQuery/Groq");
+      fetch_LLama(event, data, streamEmitter, id, import.meta.env.VITE_LLM_QUERYPATH ,navigate);
       let fragment_chunk = "";
       streamEmitter.on("data", (chunk) => {
         onBooleanChange(true);

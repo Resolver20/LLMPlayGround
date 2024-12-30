@@ -12,6 +12,7 @@ import { IoIosLogOut } from "react-icons/io";
 import { url } from "../App.jsx";
 import { toast } from "sonner";
 import Tooltip from "@mui/joy/Tooltip";
+import { authenticationFailed } from "../JavaScript/EasterEggs.js";
 
 export const TopPanel=()=>{
     const rf=useReactFlow();
@@ -54,24 +55,26 @@ export const TopPanel=()=>{
         // console.log("Value of mode",mode);
         setIsTitleEmpty(false);
         try {
-          const response = await fetch(
-            url + "/operation/save",
-            {
-              method: "POST",
-              headers: { "Content-Type": "application/json" },
-              body: JSON.stringify({
-                token: window.localStorage.getItem("access_token"),
-                data: data,
-                title: title,
-                id: data_id,
-              }),
-            }
-          );
+          const response = await fetch(url + import.meta.env.VITE_SAVE_DATA, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              token: window.localStorage.getItem("access_token"),
+              data: data,
+              title: title,
+              id: data_id,
+            }),
+          });
           if (!response.ok) {
             throw new Error(`HTTP error! Status: ${response.status}`);
           }
+          
           const res_data = await response.json();
-          // console.log("response_data",res_data);
+          if(res_data.failure){ 
+            authenticationFailed(navigate);
+            return;
+          }
+
           if (data_id == -1) {
             toast.success( `${import.meta.env.VITE_ASSISTANT} Successfully Saved !!` );
           }

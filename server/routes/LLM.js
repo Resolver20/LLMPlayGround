@@ -1,6 +1,7 @@
 import express from "express";
 import Groq  from "groq-sdk";
 import dotenv from "dotenv";
+import { TokenAuthentication } from "./Authentication.js";
 dotenv.config({ path: "../.env" });
 
 
@@ -13,6 +14,12 @@ async function delay(ms) {
 
 LLMRoutes.post("/Groq", async (req, res) => {
   const { token, query_data } = req.body;
+
+
+  const status = TokenAuthentication(token);
+  if (status != "verified") { console.log(status); res.status(404).json({ message: "Token Authentication Failed", failure: true }); return;
+  }
+
   console.log(query_data);
   const groq = new Groq({ apiKey: process.env.VITE_GROQ_API_KEY });
   const chatCompletion = await groq.chat.completions.create({
@@ -52,6 +59,10 @@ LLMRoutes.post("/Groq", async (req, res) => {
 
 LLMRoutes.post("/LocalLLM", async (req, res) => {
   const { token, query_data } = req.body;
+
+
+  const status = TokenAuthentication(token);
+  if (status != "verified") { console.log(status); res.status(404).json({ message: "Token Authentication Failed", failure: true }); return; }
 
   const local_url = process.env.VITE_LOCAL_OLLAMA_HOST;
   console.log(local_url);
