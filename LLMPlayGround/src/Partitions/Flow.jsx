@@ -75,7 +75,6 @@ export const FlowWrapper=()=>{
 const Flow=()=>{
   console.log("Rendering  Flow ");
   const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes);
-  console.log(nodes);
     const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);
     const [nodeData,setnodeData]=useState("");
     const {mode} = useContext(MyTopPanelContext);
@@ -86,13 +85,13 @@ const Flow=()=>{
     
     const OnNodesChange = useCallback(
       (changes) => {
+        console.log("On Nodes Change", changes);
         setNodes((nds) => applyNodeChanges(changes, nds));
       },
       [setNodes]
     );
     const OnEdgesChange = useCallback(
       (changes) => {
-        console.log("changes =>",changes);
         if(changes.length!=0){
 
         const edge_data=rf.getEdges().filter((elem)=>elem.id==changes[0].id);
@@ -117,6 +116,7 @@ const Flow=()=>{
           } );
         }
       }
+
         setEdges((eds) => applyEdgeChanges(changes, eds))
       },
       [setEdges]
@@ -190,7 +190,9 @@ const Flow=()=>{
             x: event.clientX ,
             y: event.clientY ,
           });
+
           const node_id=getId();
+          console.log("node_id",node_id);
           const newNode = {
             id: node_id,
             type,

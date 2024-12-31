@@ -64,9 +64,9 @@ const DeleteFlow = async (
     
     setIsTitleEmpty(false);
     localStorage.setItem("CurrentFlow", -1);
-    rf.setNodes([]);
-    rf.setEdges([]);
-    rf.setViewport([]);
+    await rf.setNodes([]);
+    await rf.setEdges([]);
+    await rf.setViewport([]);
     titleInputRef.current.value = "";
     await queryUserFlows(setSavedFlows, setIsLoading);
     toast.info(
@@ -88,23 +88,29 @@ export const SidePanel = () => {
   const navigate = useNavigate();
 
   useEffect(()=>{
+    console.log("Querying userFlows ")
     queryUserFlows(setSavedFlows, setIsLoading, navigate);
     localStorage.setItem("CurrentFlow",-1);
     // console.log("Tools.useEffect([]) => ", " called queryUserFlows ");
   },[]);
 
-  const UpdateFlow=(elem,setIsLoading)=>{
+  const UpdateFlow=async (elem,setIsLoading)=>{
     // console.log("id of the flow ", elem._id);
+    console.log("CurrentFlow updating => ",elem);
     setIsTitleEmpty(false);
-    localStorage.setItem("CurrentFlow",elem._id);
+
     const currentFlow=JSON.parse(elem.data);
     if(titleInputRef){
       titleInputRef.current.value=elem.title;
     }
+    console.log("currentFlow nodes => ",currentFlow.nodes);
+    
+    await rf.setNodes(currentFlow.nodes || []);
+    await rf.setEdges(currentFlow.edges || []);
+    await rf.setViewport(currentFlow.viewport || []);
 
-    rf.setNodes(currentFlow.nodes || []);
-    rf.setEdges(currentFlow.edges || []);
-    rf.setViewport(currentFlow.viewport || []);
+    localStorage.setItem("CurrentFlow", elem._id);
+    
     // setViewport({ x, y, zoom });
   }
 
