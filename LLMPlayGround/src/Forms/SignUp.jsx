@@ -83,17 +83,15 @@ const SignUp = () => {
               <Toaster richColors position="top-left" />
 
       <div style={styles.loginForm}>
-        <div>
-          <div style={styles.input_container}> <h3> Username </h3> <input ref={usernameRef} onKeyDown={(event) => checkForEnter(event, "username")} style={styles.input}  type="text" /></div>
-          <div style={styles.input_container}> <h3> Password </h3> <input  type="password" ref={pwdRef} onKeyDown={(event) => checkForEnter(event, "pwd")} style={styles.input}  /> </div>
-          <div style={styles.input_container}> <h3>Re-enter your password </h3> <input type="password" ref={rePwdRef}  onKeyDown={(event) => checkForEnter(event, "rePwd")} style={styles.input} /> </div>
-          <div style={styles.input_container}> 
+          <div style={styles.Label}> <h1>Welcome </h1>{" "} </div>
+        <div style={styles.input_container}>
+          <div style={styles.input_row}> <h3> Username </h3> <input ref={usernameRef} onKeyDown={(event) => checkForEnter(event, "username")} style={styles.input}  type="text" /></div>
+          <div style={styles.input_row}> <h3> Password </h3> <input  type="password" ref={pwdRef} onKeyDown={(event) => checkForEnter(event, "pwd")} style={styles.input}  /> </div>
+          <div style={styles.input_row}> <h3>Re-enter your password </h3> <input type="password" ref={rePwdRef}  onKeyDown={(event) => checkForEnter(event, "rePwd")} style={styles.input} /> </div>
+          <div style={styles.input_row}> 
             <div> <NavLink to="/"> <h5 style={{color:"gray"}}>  { " Go Back " }</h5> </NavLink> </div>
             <button style={styles.submitButton} ref={registerRef} onClick={Register} onMouseEnter={(event)=>{event.currentTarget.style.cursor = "pointer";}} > <h4> Register </h4> </button> 
             </div> 
-        </div>
-        <div>
-          <div style={styles.Label}> <h1>Welcome </h1>{" "} </div>
         </div>
       </div>
     </div>
@@ -113,14 +111,15 @@ const styles = {
     justifyContent: "center",
   },
   loginForm: {
-    width: "1000px",
-    height: "400px",
+    width: "50%",
+    height: "30%",
     backgroundColor: "white",
     display: "flex",
     flexDirection: "row",
     justifyContent: "space-around",
     alignItems: "center",
     padding: "10px",
+    gap:"10px",
     border: "1px solid black",
     boxShadow: "1px 1px 2px 2px black",
   },
@@ -133,18 +132,33 @@ const styles = {
     // boxShadow:"1px 1px  red"
   },
   input_container: {
+    width: "60%",
+    backgroundColor: "white",
+    display: "flex",
+    flexDirection: "column",
+    justifyContent: "flex-end",
+    alignItems: "center",
+  },
+  input_row: {
+    width: "90%",
     display: "flex",
     flexDirection: "row",
     color: "black",
     backgroundColor: "white",
     fontWeight: "10px",
-    width: "500px",
     justifyContent: "flex-end",
+
     alignItems: "center",
     gap: "10px",
   },
   Label: {
     color: "black",
+    width: "40%",
+    display: "flex",
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
+    backgroundColor: "white",
   },
   submitButton: {
     display: "flex",

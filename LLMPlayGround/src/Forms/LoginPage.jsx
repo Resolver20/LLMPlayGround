@@ -57,13 +57,15 @@ const LoginPage = () => {
 
   return (
     <div style={styles.main_div}>
+      <Toaster richColors position="top-left" />
       {/* <div className={`banner ${!isVisible ? "fade-out" : ""}`}> <h1> Welcome {username} </h1> </div> */}
       <div style={styles.loginForm}>
-        <Toaster richColors position="top-left" />
-        <div>
-          <div style={styles.input_container}>
-            {" "}
-            <h3> Username </h3>{" "}
+        <div style={styles.Label}>
+          <h1>LLM PlayGround </h1>
+        </div>
+        <div style={styles.input_container}>
+          <div style={styles.input_row}>
+            <h3> Username </h3>
             <input
               ref={usernameRef}
               style={styles.input}
@@ -71,26 +73,22 @@ const LoginPage = () => {
               type="text"
             />
           </div>
-          <div style={styles.input_container}>
-            {" "}
-            <h3> Password </h3>{" "}
+          <div style={styles.input_row}>
+            <h3> Password </h3>
             <input
               ref={passwordRef}
               style={styles.input}
               onKeyDown={(event) => checkForEnter(event, "password")}
               type="password"
-            />{" "}
+            />
           </div>
-          <div style={styles.input_container}>
+          <div style={styles.input_row}>
             <div>
-              {" "}
               <NavLink to="/SignUp">
-                {" "}
-                <h5 style={{ color: "gray" }}> SignUp ? </h5>{" "}
-              </NavLink>{" "}
+                <h5 style={{ color: "gray" }}> SignUp ? </h5>
+              </NavLink>
             </div>
             <div>
-              {" "}
               <button
                 ref={buttonRef}
                 style={styles.submitButton}
@@ -99,15 +97,10 @@ const LoginPage = () => {
                   event.currentTarget.style.cursor = "pointer";
                 }}
               >
-                {" "}
-                <h4> Submit </h4>{" "}
-              </button>{" "}
+                <h4> Submit </h4>
+              </button>
             </div>
           </div>
-        </div>
-        <div style={styles.Label}>
-          {" "}
-          <h1>LLM PlayGround </h1>
         </div>
       </div>
     </div>
@@ -117,7 +110,6 @@ const LoginPage = () => {
 export default LoginPage;
 
 const styles = {
-
   main_div: {
     width: "100vw",
     height: "100vh",
@@ -128,7 +120,7 @@ const styles = {
     justifyContent: "center",
   },
   loginForm: {
-    width: "900px",
+    width: "45%",
     height: "200px",
     backgroundColor: "white",
     display: "flex",
@@ -139,35 +131,49 @@ const styles = {
     border: "1px solid black",
     boxShadow: "1px 1px 2px 2px black",
   },
+  input_container: {
+    width: "45%",
+    backgroundColor: "white",
+    display: "flex",
+    flexDirection: "column",
+    justifyContent: "flex-end",
+    alignItems: "center",
+  },
+  input_row: {
+    width: "70%",
+    display: "flex",
+    flexDirection: "row",
+    color: "black",
+    backgroundColor: "white",
+    fontWeight: "10px",
+    justifyContent: "flex-end",
+
+    alignItems: "center",
+    gap: "10px",
+  },
   input: {
     width: "100%",
     height: "30px",
     backgroundColor: "white",
     color: "black",
   },
-  input_container: {
-    display: "flex",
-    flexDirection: "row",
-    color: "black",
-    backgroundColor:"white",
-    fontWeight: "10px",
-    width:"300px",
-    justifyContent: "flex-end",
-    alignItems: "center",
-    gap: "10px",
-  },
   Label: {
     color: "black",
+    width: "40%",
+    display: "flex",
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
+    backgroundColor: "white",
   },
-  submitButton:{
-    display:"flex",
-    alignItems:"center",
-    justifyContent:"center",
-    backgroundColor:"white",
-    color:"green",
-    border:"1px solid green",
-    width:"80px",
-    height:"30px"
-
-  }
+  submitButton: {
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    backgroundColor: "white",
+    color: "green",
+    border: "1px solid green",
+    width: "80px",
+    height: "30px",
+  },
 };

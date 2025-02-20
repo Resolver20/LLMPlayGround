@@ -24,7 +24,7 @@ LLMRoutes.post("/Groq", async (req, res) => {
   const groq = new Groq({ apiKey: process.env.VITE_GROQ_API_KEY });
   const chatCompletion = await groq.chat.completions.create({
     messages: [{ role: "user", content: query_data }],
-    model: "llama-3.1-70b-versatile",
+    model: process.env.VITE_LLM_MODEL,
     temperature: 1,
     max_tokens: 1024,
     top_p: 1,
